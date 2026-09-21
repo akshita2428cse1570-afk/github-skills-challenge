@@ -15,13 +15,15 @@ def run_pipeline(file_path):
     data = load_data(file_path)
 
     # INTENTIONAL ASSESSMENT ISSUE #2
-    producer_topic = EventTopic("service-events")
+    # FIXED: producer now publishes to the "anomaly-events" topic
+    producer_topic = EventTopic("anomaly-events")
 
     detector = AnomalyDetector()
     producer = EventProducer(producer_topic)
 
     # INTENTIONAL ASSESSMENT ISSUE #3
-    consumer_topic = EventTopic("anomaly-events")
+    # FIXED: consumer reads from the same topic object the producer writes to
+    consumer_topic = producer_topic
     consumer = EventConsumer(consumer_topic)
 
     detected_events = []
